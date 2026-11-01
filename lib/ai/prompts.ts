@@ -1002,15 +1002,18 @@ ${options.inspirationSummary}`
 
   const lowerPrompt = userPrompt.toLowerCase();
 
+  // Detect the product being built, not merely its target audience.
+  // A food delivery app for college students is still a food delivery app.
+  const isFoodDeliveryProduct =
+    /\b(food delivery|food ordering|restaurant app|restaurant ordering|meal delivery|order food|food marketplace)\b/i.test(lowerPrompt);
+
   const isStudentProduct =
-    lowerPrompt.includes("student") ||
-    lowerPrompt.includes("assignment") ||
-    lowerPrompt.includes("academic") ||
-    lowerPrompt.includes("college") ||
-    lowerPrompt.includes("university") ||
-    lowerPrompt.includes("course") ||
-    lowerPrompt.includes("deadline") ||
-    lowerPrompt.includes("study");
+    !isFoodDeliveryProduct &&
+    (
+      /\b(student productivity|student planner|study planner|study app|academic app|assignment tracker|course management|learning management|homework tracker)\b/i.test(lowerPrompt) ||
+      /\b(assignments|academic|study sessions|study schedule|coursework|homework)\b/i.test(lowerPrompt)
+    );
+
 
   const domainGuard = isStudentProduct
     ? `
